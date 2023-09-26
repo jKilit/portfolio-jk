@@ -1,0 +1,12 @@
+{
+  "name": "myapp-2023",
+  "version": "1.0.0",
+  "description": "myWebdevProject",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["web development", "javacript", "node.js", "express"],
+  "author": "Jonathan Kilit",
+  "license": "ISC"
+}

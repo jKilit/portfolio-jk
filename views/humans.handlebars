@@ -1,0 +1,12 @@
+<div id="main">
+    <div>
+        <h1>List of all persons</h1>
+        <ul>
+            {{#each listHumans}}
+            <li>
+                <a href="/humans/{{id}}">{{name}}</a>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
