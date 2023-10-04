@@ -1,8 +1,37 @@
-<div id="main">
-    <div>
-        <h1>Welcome</h1>
-        <div>
-            Welcome on this site!
+<div id="background">
+    <div id="row">
+        <div id="column">
+            <h2>Welcome</h2>
+            <p>Welcome to my website! My name is Jonathan Kilit, and I am a software engineering student. On this
+                website, you will find many different things about me, so feel free to click around. If you scroll down,
+                you can see a blog where I try to update every week about things that pop into my mind.</p>
         </div>
+    </div>
+    <h2>Previously</h2>
+    <p>
+    <h3>Education</h3>
+    <ul>
+        {{#each Education}}
+        <li>
+            {{description}}
+            Start year: {{startYear}}
+            End year: {{endYear}}
+        </li>
+        {{/each}}
+    </ul>
+    </p>
+
+    <div id="displayed-posts">
+        <h2 id="blog-post-title">Blog Posts</h2>
+        {{#each blog}}
+        <article class="blog-post">
+            <h3>{{title}}</h3>
+            <p>{{content}}</p>
+        </article>
+        {{/each}}
+
+        {{#if isAdmin}}
+        <a href="/new-blogpost" class="create-blog-button">Create a blogpost</a>
+        {{/if}}
     </div>
 </div>

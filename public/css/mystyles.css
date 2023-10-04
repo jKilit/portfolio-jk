@@ -1,0 +1,225 @@
+body {
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    height: 100%;
+}
+.wrapper{
+    min-height: calc(100vh);
+}
+
+#background::before {
+    content: "";
+    background-image: url(https://ju.se/images/18.1c348c1c189eda396e34bac4/1692799366605/JU%20campus%20panorama%20.jpg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+#background {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    font-size: 35px;
+    color: white;
+    background-color: darksalmon;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 10px;
+    margin-top: 20px;
+
+}
+p{
+   font-family: "fa-solid fa-font";
+   font-size: larger;
+}
+
+#menu ul {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 20px;
+}
+
+#menu a {
+    text-decoration: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: darksalmon;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#menu a:hover {
+    color: yellow
+}
+
+#column {
+    padding: 20px;
+}
+
+#row {
+    display: flex;
+}
+
+footer {
+    background-color: darkgray;
+    text-align: center;
+    padding: 20px;
+    margin-top: 10px;
+}
+.socials{
+    display: flex;
+    justify-content: space-around;
+    align-content: space-around;
+    margin: 20px;
+}
+#blog {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-titel {
+    display: flex;
+    flex-direction: column;
+}
+
+#form-text {
+    display: flex;
+    flex-direction: column;
+}
+
+#enter-blog {
+    width: 100px;
+    height: 30px;
+    background-color: dimgray;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+#displayed-posts {
+    padding: 20px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    background-image: url(https://getflywheel.com/wp-content/uploads/2015/08/free-blurred-backgrounds.jpg);
+    /* Replace with your image URL */
+    background-size: cover;
+    /* Adjust this as needed to fit the image properly */
+    background-position: center;
+}
+
+#blog-posttitel {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    font-size: 35px;
+}
+
+/*************************************************************************/
+#selfportrait {
+    height: 25%;
+    width: 25%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+/* ... Your existing CSS styles ... */
+
+.centered-form {
+    max-width: 300px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.centered-form label {
+
+    display: block;
+}
+
+.centered-form input[type="text"],
+.centered-form input[type="password"] {
+    width: 278px;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.centered-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: darksalmon;
+    border: none;
+    cursor: pointer;
+}
+
+.centered-form button:hover {
+    background-color: salmon;
+}
+
+#managment-id {
+    width: 45%;
+    height: 45%;
+    margin: 20px;
+    border-radius: 20px;
+}
+.download-button{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    background-color: darksalmon;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.logout-button {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    background-color: darksalmon;
+    border-radius: 10px;
+    padding: 20px;
+}
+.logout-center{
+    display: flex;
+    justify-content: center;
+}
+#inheritance-id {
+    margin-left: 120px;
+    width: 25%;
+    height: 25%;
+    border-radius: 20px;
+}
+
+.download-button:hover {
+    background-color: salmon;
+}
+.create-blog-button{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    background-color: darksalmon;
+    padding: 5px;
+    border-radius: 10px;
+    margin: 20px;
+    width: 140px;
+}
