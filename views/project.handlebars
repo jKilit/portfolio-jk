@@ -1,10 +1,27 @@
 <div id="background">
     <h1>My projects</h1>
-    <ul>
+    {{#if dbError}}
+    <p>Sorry, there was an error with the database. Please try again later.</p>
+    {{else}}
+    <ul class="list-projects">
         {{#each projects}}
         <li>
-            <a href="/specific/{{id}}" class="download-button">{{title}}</a>
+            <a href="/specific/{{id}}" class="download-button">{{title}}</a> <br>
+            {{#if ../isAdmin}}
+            <div>
+                <br>
+                <a href="/edit-project/{{id}}">Edit project</a> - <a href="/delete-project/{{id}}">Delete</a>
+            </div>
+            {{/if}}
         </li>
         {{/each}}
+        {{/if}}
     </ul>
+    {{#if dbError}}
+    <p>Sorry, there was an error with the database. Please try again later.</p>
+    {{else}}
+    {{#if isAdmin}}
+    <a href="/create-project/{{id}}" class="download-button">Create project</a>
+    {{/if}}
+    {{/if}}
 </div>

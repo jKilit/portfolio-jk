@@ -1,31 +1,37 @@
-const express = require('express')// loads the express package
-const { engine } = require('express-handlebars'); // loads handlebars for Express
-const port = 8080 // defines the port
-const app = express() // creates the Express application
-const bodyParser=require('body-parser')
-const session=require('express-session')
-const connectSqlite3=require('connect-sqlite3')
-const cookieParser= require('cookie-parser')
+const express = require('express')
+const { engine } = require('express-handlebars');
+const bodyParser = require('body-parser')
+const session = require('express-session')
+const connectSqlite3 = require('connect-sqlite3')
+const sqlite3 = require('sqlite3');
 
+// EXPRESS APP
+const port = 8080
+const app = express() 
 
+// DATABASE
+const db = new sqlite3.Database('project-jk.sqlite');
+
+// VÍEW ENGINE HANDLEBARS
 app.engine('handlebars', engine());
 app.set('view engine', 'handlebars');
-// defines the views directory
 app.set('views', './views');
 
-// define static directory "public" to access css/ and img/
+// CONFIG
 app.use(express.static('public'))
-app.use(bodyParser.urlencoded({ extended:false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-const SQLiteStore= connectSqlite3(session)
+// SESSION
+const SQLiteStore = connectSqlite3(session)
 app.use(session({
-  store:new SQLiteStore ({db:"session-db.db"}),
-  "saveUninitialized":false,
-  "resave":false,
-  "secret":"This123Is@Another#456Greatsecret678%Sentence"
+  store: new SQLiteStore({ db: "session-db.db" }),
+  "saveUninitialized": false,
+  "resave": false,
+  "secret": "This123Is@Another#456Greatsecret678%Sentence"
 }));
 
+// ROUTES
 app.get('/', (req, res) => {
   db.all("SELECT * FROM Education", function (error1, education) {
     if (error1) {
@@ -34,9 +40,9 @@ app.get('/', (req, res) => {
         theError: error1,
         Education: [],
         blog: [],
-        isLoggedin: req.session.isLoggedIn, // Add session information
-        name: req.session.name,                // Add session information
-        isAdmin: req.session.isAdmin      // Add session information
+        isLoggedin: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin
       };
       res.render("home.handlebars", model);
     } else {
@@ -47,9 +53,9 @@ app.get('/', (req, res) => {
             theError: error2,
             Education: [],
             blog: [],
-            isLoggedin: req.session.isLoggedIn || false, // Add session information
-            name: req.session.name || "",                // Add session information
-            isAdmin: req.session.isAdmin || false        // Add session information
+            isLoggedin: req.session.isLoggedIn,
+            name: req.session.name || "",
+            isAdmin: req.session.isAdmin
           };
           res.render("home.handlebars", model);
         } else {
@@ -58,9 +64,9 @@ app.get('/', (req, res) => {
             theError: "",
             Education: education,
             blog: blog,
-            isLoggedin: req.session.isLoggedIn,// Add session information
-            name: req.session.name,       // Add session information
-            isAdmin: req.session.isAdmin       // Add session information
+            isLoggedin: req.session.isLoggedIn,
+            name: req.session.name,
+            isAdmin: req.session.isAdmin
           };
           res.render("home.handlebars", model);
         }
@@ -78,8 +84,8 @@ app.get('/about', (req, res) => {
         theError: error,
         languages: [],
         isLoggedin: req.session.isLoggedIn,
-        name: req.session.name, 
-        isAdmin: req.session.isAdmin  
+        name: req.session.name,
+        isAdmin: req.session.isAdmin
       };
       res.render("about.handlebars", model);
     } else {
@@ -89,7 +95,7 @@ app.get('/about', (req, res) => {
         languages: languages,
         isLoggedin: req.session.isLoggedIn,
         name: req.session.name,
-        isAdmin: req.session.isAdmin  
+        isAdmin: req.session.isAdmin
       };
       res.render("about.handlebars", model);
     }
@@ -109,8 +115,8 @@ app.get('/specific/:id', function (req, res) {
         theError: error,
         specificProject: null,
         isLoggedin: req.session.isLoggedIn,
-        name: req.session.name, 
-        isAdmin: req.session.isAdmin  
+        name: req.session.name,
+        isAdmin: req.session.isAdmin
       };
       res.render('specific.handlebars', model);
     } else if (specificProject) {
@@ -120,7 +126,7 @@ app.get('/specific/:id', function (req, res) {
         specificProject: specificProject,
         isLoggedin: req.session.isLoggedIn,
         name: req.session.name,
-        isAdmin: req.session.isAdmin  
+        isAdmin: req.session.isAdmin
       };
 
       res.render('specific.handlebars', model);
@@ -138,7 +144,7 @@ app.get('/project', (req, res) => {
         projects: [],
         isLoggedin: req.session.isLoggedIn,
         name: req.session.name,
-        isAdmin: req.session.isAdmin  
+        isAdmin: req.session.isAdmin
       }
 
       res.render("project.handlebars", model)
@@ -150,70 +156,90 @@ app.get('/project', (req, res) => {
         projects: Projects,
         isLoggedin: req.session.isLoggedIn,
         name: req.session.name,
-        isAdmin: req.session.isAdmin  
+        isAdmin: req.session.isAdmin
       }
       res.render("project.handlebars", model)
     }
   })
 });
 app.get('/login', function (req, res) {
-  const model={
+  const model = {
     isLoggedin: req.session.isLoggedIn,
     name: req.session.name,
-    isAdmin: req.session.isAdmin  
+    isAdmin: req.session.isAdmin
   }
-  res.render('login.handlebars',model)
+  res.render('login.handlebars', model)
 });
 
 app.get('/logout', function (req, res) {
   const model = {
     isLoggedin: req.session.isLoggedIn,
-    name:req.session.name,
-    isAdmin:req.session.isAdmin 
-  } 
+    name: req.session.name,
+    isAdmin: req.session.isAdmin
+  }
   req.session.isAdmin = false;
   req.session.isLoggedIn = false;
   req.session.name = "";
   res.redirect('/login')
 })
 
-app.post('/login',(req, res) => {
-  const un=req.body.un
-  const pw= req.body.pw
+const bcrypt = require('bcrypt');
 
-  if(un=="jonathan" && pw=="snygg"){
-    console.log("Jonathan is logged in")
-    req.session.isAdmin=true
-    req.session.isLoggedIn=true
-    req.session.name="jonathan"
+app.post('/login', (req, res) => {
+  const un = req.body.un;
+  const pw = req.body.pw;
 
-    res.redirect('/')
-  }
-  else{
-    console.log("Wrong password or username")
-    req.session.isAdmin=false
-    req.session.isLoggedIn=false
-    req.session.name=""
-    res.redirect('/login')
-  }
+  db.get("SELECT * FROM users WHERE username = ?", [un], (dberror, user) => {
+    if (dberror) {
+      res.redirect('/');
+    } else if (user) {
+      const cryptedpass = user.password;
+
+      bcrypt.compare(pw, cryptedpass, (compareE, resultat) => {
+        if (compareE) {
+          res.redirect('/login');
+        } else {
+          if (resultat) {
+            const isAdmin = user.isAdmin === 1;
+            req.session.isAdmin = isAdmin;
+            req.session.isLoggedIn = true;
+            req.session.name = user.username;
+            res.redirect('/');
+          } else {
+            req.session.isAdmin = false;
+            req.session.isLoggedIn = false;
+            req.session.name = "";
+            res.redirect('/');
+          }
+        }
+      });
+    } else {
+      req.session.isAdmin = false;
+      req.session.isLoggedIn = false;
+      req.session.name = "";
+      res.redirect('/login');
+    }
+  });
 });
 
+
+
 app.get('/contact', function (req, res) {
-  const model={
+  const model = {
     isLoggedin: req.session.isLoggedIn,
     name: req.session.name,
-    isAdmin: req.session.isAdmin  
+    isAdmin: req.session.isAdmin
   }
-  res.render('contact.handlebars',model)
+  res.render('contact.handlebars', model)
 })
 
-app.get('/login', function (req, res) {
-  const model={
+app.get('/new-blogpost', function (req, res) {
+  const model = {
     isLoggedin: req.session.isLoggedIn,
     name: req.session.name,
-    isAdmin: req.session.isAdmin  
+    isAdmin: req.session.isAdmin
   }
-  res.render('login',model)
+  res.render('new-blogpost', model)
 })
 
 app.post('/new-blogpost', (req, res) => {
@@ -231,15 +257,243 @@ app.post('/new-blogpost', (req, res) => {
         console.log("ERROR:", error);
       } else {
         console.log("Line added into blog table!");
+        res.redirect('/');
       }
     });
   }
-  else{
+  else {
     res.redirect('/login');
   }
-  
-})
-;
+
+
+});
+
+
+app.get('/edit-blogpost/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.get("SELECT * FROM blog WHERE id=?", [id], function (error, blog) {
+    if (error) {
+      console.log("ERROR: ", error);
+      const model = {
+        dbError: true,
+        theError: error,
+        blog: {},
+        isLoggedIn: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin,
+      };
+
+      res.render("edit-blogpost.handlebars", model);
+    } else {
+      const model = {
+        dbError: false,
+        theError: "",
+        blog: blog,
+        isLoggedIn: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin,
+      };
+
+      res.render("edit-blogpost.handlebars", model);
+    }
+  });
+});
+
+
+app.post('/edit-blogpost/:id', (req, res) => {
+  const id = req.params.id;
+  const newTitle = req.body['blog-title'];
+  const newContent = req.body['blog-text'];
+
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+
+    db.run("UPDATE blog SET title=?, content=? WHERE id=?", [newTitle, newContent, id], (error) => {
+      if (error) {
+        console.log("ERROR: ", error);
+      } else {
+        console.log("Blogpost updated!");
+      }
+      res.redirect('/');
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/delete-blogpost/:id', (req, res) => {
+  const id = req.params.id;
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true){
+    db.run("DELETE FROM blog WHERE id=?", [id], (error, blog) => {
+      if (error) {
+        const model = {
+          dbError: true,theError: error,
+          isLoggedin: req.session.isLoggedin,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("home.handlebars", model)
+      } else {
+        const model = {
+          dbError: false,theError: "",
+          isLoggedin: req.session.isLoggedin,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("home.handlebars", model)
+      }
+      res.redirect("/");
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/create-project', function (req, res) {
+  const model = {
+    isLoggedin: req.session.isLoggedIn,
+    name: req.session.name,
+    isAdmin: req.session.isAdmin
+  }
+  res.render('create-project.handlebars', model);
+});
+
+app.post('/create-project', (req, res) => {
+  const title = req.body['project-title'];
+  const year = req.body['project-year'];
+  const desc = req.body['project-desc'];
+
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+    const newPost = {
+      title: title,
+      desc: desc,
+      year: year
+    };
+
+    db.run("INSERT INTO Projects (title,year,desc) VALUES (?, ?,?)", [newPost.title, newPost.year ,newPost.desc], (error) => {
+      if (error) {
+        console.log("ERROR:", error);
+      } else {
+        console.log("Line added into blog table!");
+        res.redirect('/');
+      }
+    });
+  }
+  else {
+    res.redirect('/login');
+  }
+});
+
+
+
+app.get('/edit-project/:id', (req, res) => {
+  const id = req.params.id;
+
+  db.get("SELECT * FROM Projects WHERE id=?", [id], function (error, Projects) {
+    if (error) {
+      console.log("ERROR: ", error);
+      const model = {
+        dbError: true,
+        theError: error,
+        Projects: {},
+        isLoggedIn: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin,
+      };
+
+      res.render("edit-project.handlebars", model);
+    } else {
+      const model = {
+        dbError: false,
+        theError: "",
+        Projects: Projects,
+        isLoggedIn: req.session.isLoggedIn,
+        name: req.session.name,
+        isAdmin: req.session.isAdmin,
+      };
+
+      res.render("edit-project.handlebars", model);
+    }
+  });
+});
+
+app.post('/edit-project/:id', (req, res) => {
+  const id = req.params.id;
+  const newTitle = req.body['project-title'];
+  const newYear = req.body['project-year'];
+  const newDesc = req.body['project-desc'];
+
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+
+    db.run("UPDATE Projects SET title=?, year=?, desc=? WHERE id=?", [newTitle, newYear, newDesc, id], (error) => {
+      if (error) {
+        console.log("ERROR: ", error);
+      } else {
+        console.log("Project updated!");
+      }
+      res.redirect('/project');
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/delete-project/:id', (req, res) => {
+  const id = req.params.id;
+  if (req.session.isLoggedIn === true && req.session.isAdmin === true) {
+    db.run("DELETE FROM Projects WHERE id=?", [id], (error, project) => {
+      if (error) {
+        const model = {
+          dbError: true, theError: error,
+          isLoggedin: req.session.isLoggedin,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("project.handlebars", model)
+      } else {
+        const model = {
+          dbError: false, theError: "",
+          isLoggedin: req.session.isLoggedin,
+          name: req.session.name,
+          isAdmin: req.session.isAdmin,
+        }
+        res.render("project.handlebars", model)
+      }
+      res.redirect("/");
+    });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+app.get('/register', function (req, res) {
+  res.render('register.handlebars');
+});
+
+
+app.post('/register', (req, res) => {
+  const username = req.body['unR'];
+  const plainPassword = req.body['pwR'];
+
+  const hashedPassword = bcrypt.hashSync(plainPassword, 10);
+  const reg ={
+    username:username,
+    password:hashedPassword,
+    isAdmin:0
+  };
+
+  db.run("INSERT INTO users (username, password,isAdmin) VALUES (?, ?, ?)", [reg.username, reg.password,reg.isAdmin], (error) => {
+    if (error) {
+      console.log("ERROR:", error);
+    } else {
+      console.log("User added into the users table!");
+      res.redirect('/');
+    }
+  });
+});
+
+
+
 
 app.use(function (req, res) {
   res.status(404).render('404.handlebars');
@@ -247,13 +501,11 @@ app.use(function (req, res) {
 
 /**************************INSERT DATA***************DATABASE STARTS HERE*********************************************************/
 
-const sqlite3 = require('sqlite3');
-const db = new sqlite3.Database('project-jk.sqlite');
 
 /*db.run(`CREATE TABLE IF NOT EXISTS blog (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  title TEXT,
-  content TEXT
+  title TEXT NOT NULL,
+  content TEXT NOT NULL
   )`);
   
   const blogposts = [
@@ -280,7 +532,6 @@ const db = new sqlite3.Database('project-jk.sqlite');
   title TEXT NOT NULL,
   desc TEXT NOT NULL,
   year INTEGER NOT NULL,
-  pimgURL TEXT NOT NULL
 )`);
 
 const projects = [
@@ -331,78 +582,34 @@ language.forEach((lan) => {
 });
 */
 
-/*db.run(`CREATE TABLE IF NOT EXISTS contactInfo (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  mail TEXT NOT NULL,
-  number INTEGER NOT NULL,
-  homeAdress TEXT NOT NULL,
-  city TEXT NOT NULL,
-  country TEXT NOT NULL,
-  )`);
-  
-
-  const contactInformation =[
-    {"mail": "random.name@hotmail.com","number": "0763399256", "homeAdress": "Street 1", "city": "Jönköping", "country": "Sweden",
-  }
-  ]
-  contactInformation.forEach((contactInformation) => {
-    db.run('INSERT INTO contactInfo (mail, number, homeAdress, city, country) VALUES (?,?,?,?,?)', [contactInformation.mail, contactInformation.number, contactInformation.homeAdress, contactInformation.city, contactInformation.country], function(error) {
-      if (error) {
-        console.error('Error inserting contactinformation post:', error);
-      } else {
-        console.log('New contact information inserted with ID:', this.lastID);
-      }
-    });
-  });
-  */
-
-/*db.run(`CREATE TABLE IF NOT EXISTS skills (
-  sid INTEGER PRIMARY KEY AUTOINCREMENT,
-  sname TEXT NOT NULL,
-  sdesc TEXT NOT NULL,
-  stype TEXT NOT NULL
-)`, (error) => {
-  if (error) {
-    console.error('Error creating "skills" table:', error);
-  } else {
-    console.log('Table "skills" created (or already exists).');
-  }
-});
-
-
-const skills = [
-  { "sid": "1", "sname": "C/C++", "sdesc": "Programming with C/C++.", "stype": "Programming language." },
-  { "sid": "2", "sname": "Java", "sdesc": "Programming with Java.", "stype": "Programming language." },
-  { "sid": "3", "sname": "Javascript", "sdesc": "Programming with Javascript.", "stype": "Programming language." },
-  { "sid": "4", "sname": "HTML", "sdesc": "Programming with HTML for website.", "stype": "Hypertext Markup Language." },
-  { "sid": "5", "sname": "CSS", "sdesc": "Designing website.", "stype": "Cascading style sheets language" },
-  { "sid": "6", "sname": "Express", "sdesc": "A framework for programming Javascript on the server side.", "stype": "framework" },
-  { "sid": "7", "sname": "NodeJS", "sdesc": "Programming with Javascript on the server side.", "stype": "Programming language" },
-  { "sid": "8", "sname": "Object-oriented programming", "sdesc": "Programming with this method", "stype": "Programming method" },
-  { "sid": "9", "sname": "VSCode", "sdesc": "Open-source integrated development environment", "stype": "Coding environment" },
-  { "sid": "10", "sname": "QT Creator", "sdesc": "Open-source integrated development environment", "stype": "Coding environment" },
-];
-
-
-
-// inserts skills
-// inserts skills
-skills.forEach((specificSkill) => {
-  db.run("INSERT INTO skills (sid, sname, sdesc, stype) VALUES (?, ?, ?, ?)", [specificSkill.sid, specificSkill.sname, specificSkill.sdesc, specificSkill.stype], (error) => {
-    if (error) {
-      console.log("ERROR: ", error)
-    } else {
-      console.log("Line added to skills successfully!")
-    }
-  })
-})
-*/
 
 /*db.run(`CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  isAdmin INTEGER NOT NULL 
 )`);
+*/
+
+
+/*
+const users = 'Jerome'
+const plainPassword = '123'
+const hashedPassword = bcrypt.hashSync(plainPassword, 10);
+
+  db.run('INSERT INTO users (username, password, isAdmin) VALUES (?, ?, ?)', [users, hashedPassword, 1], function(err) {
+    if (err) {
+      console.error('Error inserting user:', err);
+    } else {
+      console.log('New user entry inserted with ID:', this.lastID);
+    }
+  });
+  */
+
+
+
+
+/*
 const hashPassword = (password) => {
   const saltRounds = 10;
   return bcrypt.hashSync(password, saltRounds);
@@ -410,28 +617,6 @@ const hashPassword = (password) => {
 */
 
 
-/****************************QUERIES!************************************************* */
-//Delete specific ID from BlOG
-// Replace with the new image URL you want to set
-
-// SQL query to update the picture (pimgURL) of the row with the specified ID
-
-// Close the database connection when done
-
-// SQL query to remove the "sdesc" column from the "skills" table
-
-/*const user='jonathanKilit';
-const password= hashPassword('test123')
-
-db.run('INSERT INTO users (username, password) VALUES (?, ?)', [user, password], function (err) {
-  if (err) {
-    console.error('Error inserting user:', err);
-  } else {
-    console.log('New user inserted with ID:', this.lastID);
-  }
-});
-*/
-// runs the app and listens to the port
 app.listen(port, () => {
   console.log(`Server running and listening on port ${port}...`)
 })

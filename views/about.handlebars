@@ -15,29 +15,33 @@
                         Furthermore, I have had the opportunity to play soccer throughout my life, which has helped me
                         develop discipline and gain
                         experience working together in a team with numerous individuals towards a common goal.
-                        <ul>
-                            <h3>Language knowledge</h3>
-                            {{#each languages}}
-                            <li>{{name}}: {{level}}</li>
-                            {{/each}}
-                        </ul>
+                    <ul>
+                        <h3>Language knowledge</h3>
+                        {{#if dbError}}
+                        <p>Sorry, there was an error with the database. Please try again later.</p>
+                        {{else}}
+                        {{#each languages}}
+                        <li>{{name}}: {{level}}</li>
+                        {{/each}}
+                        {{/if}}
+                    </ul>
                     </p>
                 </div>
                 <div id="column" class="column col-3 col-md-6 col-sm-12">
                     <h2>Knowledgeable in</h2>
                     <p>
-                        <ul>
-                            <li>C/C++</li>
-                            <li>Java</li>
-                            <li>JavaScript</li>
-                            <li>HTML</li>
-                            <li>CSS</li>
-                            <li>Express</li>
-                            <li>NodeJS</li>
-                            <li>VSCode</li>
-                            <li>QT Creator</li>
-                        </ul>
-                        and more to come!
+                    <ul>
+                        <li>C/C++</li>
+                        <li>Java</li>
+                        <li>JavaScript</li>
+                        <li>HTML</li>
+                        <li>CSS</li>
+                        <li>Express</li>
+                        <li>NodeJS</li>
+                        <li>VSCode</li>
+                        <li>QT Creator</li>
+                    </ul>
+                    and more to come!
                     </p>
                 </div>
             </div>

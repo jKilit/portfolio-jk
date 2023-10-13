@@ -4,13 +4,10 @@ body {
     font-family: Arial, sans-serif;
     height: 100%;
 }
-.wrapper{
-    min-height: calc(100vh);
-}
 
 #background::before {
     content: "";
-    background-image: url(https://ju.se/images/18.1c348c1c189eda396e34bac4/1692799366605/JU%20campus%20panorama%20.jpg);
+    background-image: url('/img/JUcampuspanorama.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(10px);
@@ -42,9 +39,10 @@ h1 {
     margin-top: 20px;
 
 }
-p{
-   font-family: "fa-solid fa-font";
-   font-size: larger;
+
+p {
+    font-family: "fa-solid fa-font";
+    font-size: larger;
 }
 
 #menu ul {
@@ -82,18 +80,20 @@ footer {
     padding: 20px;
     margin-top: 10px;
 }
-.socials{
+
+.socials {
     display: flex;
     justify-content: space-around;
     align-content: space-around;
     margin: 20px;
 }
+
 #blog {
     display: flex;
     flex-direction: column;
 }
 
-#form-titel {
+.form-title {
     display: flex;
     flex-direction: column;
 }
@@ -116,14 +116,12 @@ footer {
     margin: auto;
     display: flex;
     flex-direction: column;
-    background-image: url(https://getflywheel.com/wp-content/uploads/2015/08/free-blurred-backgrounds.jpg);
-    /* Replace with your image URL */
+    background-image: url('/img/free-blurred-backgrounds.jpg');
     background-size: cover;
-    /* Adjust this as needed to fit the image properly */
     background-position: center;
 }
 
-#blog-posttitel {
+.blog-title {
     display: flex;
     justify-content: center;
     margin-bottom: 60px;
@@ -139,7 +137,6 @@ footer {
     border-radius: 50%;
 }
 
-/* ... Your existing CSS styles ... */
 
 .centered-form {
     max-width: 300px;
@@ -181,7 +178,8 @@ footer {
     margin: 20px;
     border-radius: 20px;
 }
-.download-button{
+
+.download-button {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
@@ -199,10 +197,12 @@ footer {
     border-radius: 10px;
     padding: 20px;
 }
-.logout-center{
+
+.logout-center {
     display: flex;
     justify-content: center;
 }
+
 #inheritance-id {
     margin-left: 120px;
     width: 25%;
@@ -213,7 +213,8 @@ footer {
 .download-button:hover {
     background-color: salmon;
 }
-.create-blog-button{
+
+.create-blog-button {
     text-decoration: none;
     color: inherit;
     cursor: pointer;
@@ -222,4 +223,70 @@ footer {
     border-radius: 10px;
     margin: 20px;
     width: 140px;
+}
+
+.form-year {
+    display: flex;
+    flex-direction: column;
+}
+
+#project-year {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    font-size: 35px;
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+}
+
+.enter-project {
+    width: 100px;
+    height: 30px;
+    background-color: dimgray;
+    border-radius: 10px;
+    margin: 10px;
+}
+
+#project-title {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    font-size: 35px;
+}
+
+.list-projects {
+    list-style: none;
+}
+
+.login-b {
+    margin-top: 20px;
+}
+
+a#register {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button.register {
+    display: flex;
+    align-content: space-between;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+    #menu ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+
+    }
+    #menu li{
+        margin: 10px;
+    }
 }

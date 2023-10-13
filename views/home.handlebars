@@ -11,6 +11,9 @@
     <p>
     <h3>Education</h3>
     <ul>
+        {{#if dbError}}
+        <p>Sorry, there was an error with the database. Please try again later.</p>
+        {{else}}
         {{#each Education}}
         <li>
             {{description}}
@@ -18,20 +21,30 @@
             End year: {{endYear}}
         </li>
         {{/each}}
+        {{/if}}
     </ul>
     </p>
 
     <div id="displayed-posts">
         <h2 id="blog-post-title">Blog Posts</h2>
+        {{#if dbError}}
+        <p>Sorry, there was an error with the database. Please try again later.</p>
+        {{else}}
         {{#each blog}}
         <article class="blog-post">
             <h3>{{title}}</h3>
             <p>{{content}}</p>
+            {{#if ../isAdmin}}
+            <div>
+                <a href="/edit-blogpost/{{id}}">Edit post</a> - <a href="/delete-blogpost/{{id}}">Delete post</a>
+            </div>
+            {{/if}}
         </article>
         {{/each}}
 
         {{#if isAdmin}}
         <a href="/new-blogpost" class="create-blog-button">Create a blogpost</a>
+        {{/if}}
         {{/if}}
     </div>
 </div>

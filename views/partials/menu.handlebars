@@ -1,13 +1,16 @@
-<header id="menu">
-    <ul>
-        <li class="column"><a href="/">Home</a></li>
-        <li class="column"><a href="/about">About</a></li>
-        <li class="column"><a href="/contact">Contact</a></li>
-        <li class="column"><a href="/project">Projects</a></li>
-        {{#if isLoggedin}}
-        <li class="column"><a href="/logout">Logout</a></li>
-        {{else}}
-        <li class="column"><a href="/login">Login</a></li>
-        {{/if}}
-    </ul>
-</header>
+<div class="container">
+    <div id="menu">
+        <ul class="columns">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li> <a href="/project">Projects</a></li>
+
+            {{#if isLoggedin}}
+            <li ><a href="/logout">Logout</a></li>
+            {{else}}
+            <li><a href="/login">Login</a></li>
+            {{/if}}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+<div id="background">
+    <div class="project">
+        {{#if dbError}}
+        <p>Sorry, there was an error with the database. Please try again later.</p>
+        {{else}}
+        <h2>What project do you want to add? (only for me)</h2>
+        <form class="form-title" method="post" action="/edit-project/{{Projects.id}}">
+            <label for="project-title">Title:</label>
+            <input type="text" class="project-title" value="{{Projects.title}}" name="project-title" required>
+            <label for="project-year">year:</label>
+            <input type="text" class="project-year" value="{{Projects.year}}" name="project-year" required>
+
+            <label for="project-desc">Tell me about the project!:</label>
+            <textarea name="project-desc" id="project-desc" cols="30" rows="10" required>{{Projects.desc}}"</textarea>
+
+            <button type="submit" class="enter-project">Enter</button>
+        </form>
+        {{/if}}
+    </div>
+</div>
